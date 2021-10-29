@@ -6,16 +6,18 @@ class DetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final String movie = ModalRoute.of(context)!.settings.arguments.toString();
     return Scaffold(
-        body: CustomScrollView(
-      slivers: [
-        _CustomAppBar(),
-        SliverList(
-          delegate: SliverChildListDelegate(
-              [_PosterAndTitle(), _Overview(), _Overview(), CastingCards()]),
-        ),
-        //SliverFillRemaining(),
-      ],
-    ));
+      body: CustomScrollView(
+        slivers: [
+          _CustomAppBar(),
+          SliverList(
+            delegate: SliverChildListDelegate(
+                [_PosterAndTitle(), _Overview(), _Overview(), CastingCards()]),
+          ),
+
+          //SliverFillRemaining(),
+        ],
+      ),
+    );
   }
 }
 
@@ -31,6 +33,7 @@ class _CustomAppBar extends StatelessWidget {
         centerTitle: true,
         titlePadding: EdgeInsets.all(0),
         title: Container(
+          padding: EdgeInsets.only(bottom: 10),
           alignment: Alignment.bottomCenter,
           color: Colors.black45,
           width: double.infinity,
@@ -52,7 +55,7 @@ class _PosterAndTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
     return Container(
-      margin: EdgeInsets.only(top: 20),
+      margin: EdgeInsets.only(top: 10),
       padding: EdgeInsets.symmetric(horizontal: 20),
       child: Row(
         children: [
@@ -106,9 +109,7 @@ class _Overview extends StatelessWidget {
     return Container(
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: Text(
-          "Esse minim veniam ex elit cillum. Ipsum enim occaecat excepteur Lorem laborum aute laboris magna. Duis officia excepteur consectetur est velit amet laboris tempor." +
-              "Ad velit in occaecat nulla eu cupidatat incididunt id officia incididunt duis id. Sint commodo ipsum dolore et. Amet laborum eiusmod voluptate esse. Excepteur ad incididunt id incididunt ex et cupidatat cillum. Et qui excepteur deserunt consequat duis excepteur dolor. Est occaecat laboris veniam sunt consectetur ullamco occaecat aliquip cillum sunt. Exercitation dolor qui consectetur ut officia incididunt in veniam id magna." +
-              "Tempor reprehenderit eiusmod deserunt commodo adipisicing nostrud. Eiusmod voluptate tempor sint proident nulla id magna deserunt duis. Qui ad ad pariatur culpa est ea eiusmod excepteur amet ullamco ex ex tempor ullamco. Nulla aliquip exercitation ullamco enim.",
+          "Esse minim veniam ex elit cillum. Ipsum enim occaecat excepteur Lorem laborum aute laboris magna. Duis officia excepteur consectetur est velit amet laboris tempor.",
           style: Theme.of(context).textTheme.subtitle1,
           textAlign: TextAlign.justify,
         ));
