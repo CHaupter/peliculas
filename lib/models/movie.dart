@@ -34,7 +34,7 @@ class Movie {
   int voteCount;
 
   get fullPosterImage {
-    if (posterPath != null)
+    if (posterPath!.isNotEmpty)
       return "https://image.tmdb.org/t/p/w500${this.backdropPath}";
     return "https://i.stack.imgur.com/GNhxO.png";
   }

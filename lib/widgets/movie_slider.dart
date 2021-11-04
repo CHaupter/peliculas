@@ -1,40 +1,83 @@
 import 'package:flutter/material.dart';
+import 'package:peliculas/models/movie.dart';
 
 class MovieSlider extends StatelessWidget {
-  const MovieSlider({Key? key}) : super(key: key);
+  final List<Movie> movies;
+  final String? title;
+
+  const MovieSlider({Key? key, required this.movies, this.title})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: 260,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            child: Text(
-              "Populares",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+    if (movies.length == 0) {
+      return Container(
+        width: double.infinity,
+        height: 260,
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
+    if (title == null) {
+      return Container(
+        width: double.infinity,
+        height: 260,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            //Si no hay titulo, no mostrar este Widget
+
+            SizedBox(
+              height: 5.0,
             ),
-          ),
-          SizedBox(
-            height: 5.0,
-          ),
-          Expanded(
-              child: ListView.builder(
-                  itemCount: 20,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (_, int index) {
-                    return _MoviePoster();
-                  }))
-        ],
-      ),
-    );
+            Expanded(
+                child: ListView.builder(
+                    itemCount: movies.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (_, int index) {
+                      return _MoviePoster(movies[index]);
+                    }))
+          ],
+        ),
+      );
+    } else {
+      return Container(
+        width: double.infinity,
+        height: 260,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            //Si no hay titulo, no mostrar este Widget
+            Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: Text(
+                  title!,
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                )),
+            SizedBox(
+              height: 5.0,
+            ),
+            Expanded(
+                child: ListView.builder(
+                    itemCount: movies.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (_, int index) {
+                      return _MoviePoster(movies[index]);
+                    }))
+          ],
+        ),
+      );
+    }
   }
 }
 
 class _MoviePoster extends StatelessWidget {
+  final Movie movie;
+
+  const _MoviePoster(this.movie);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -51,16 +94,16 @@ class _MoviePoster extends StatelessWidget {
                   child: FadeInImage(
                       fit: BoxFit.cover,
                       placeholder: AssetImage("assets/no-image.jpg"),
-                      image: NetworkImage(
-                          "https://via.placeholder.com/300x400")))),
+                      image: NetworkImage(movie.fullPosterImage)))),
           SizedBox(
             height: 5.0,
           ),
           Text(
-            "StarWars: El retorno del nuevo Jedi que se yo",
+            movie.title,
             overflow: TextOverflow.ellipsis,
             maxLines: 2,
             textAlign: TextAlign.center,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
           )
         ],
       ),
