@@ -22,7 +22,7 @@ class _MovieSliderState extends State<MovieSlider> {
     super.initState();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
-          _scrollController.position.maxScrollExtent - 500) {
+          _scrollController.position.maxScrollExtent - 50) {
         print("Obtener siguiente página");
         widget.onNextPage();
       }
@@ -89,7 +89,7 @@ class _MovieSliderState extends State<MovieSlider> {
             ),
             Expanded(
                 child: ListView.builder(
-                    itemCount: 20,
+                    itemCount: widget.movies.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (_, int index) {
                       return _MoviePoster(widget.movies[index]);
