@@ -15,15 +15,16 @@ class MovieSlider extends StatefulWidget {
 }
 
 class _MovieSliderState extends State<MovieSlider> {
-  final ScrollController _scrollController = ScrollController();
+  final ScrollController scrollController = ScrollController();
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels >=
-          _scrollController.position.maxScrollExtent - 50) {
-        print("Obtener siguiente página");
+
+    scrollController.addListener(() {
+      if (scrollController.position.pixels >=
+          scrollController.position.maxScrollExtent) {
+        print("Siguiente página");
+
         widget.onNextPage();
       }
     });
@@ -50,18 +51,15 @@ class _MovieSliderState extends State<MovieSlider> {
     if (widget.title == null) {
       return Container(
         width: double.infinity,
-        height: 260,
+        height: 280,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //Si no hay titulo, no mostrar este Widget
 
-            SizedBox(
-              height: 5.0,
-            ),
             Expanded(
                 child: ListView.builder(
-                    controller: _scrollController,
+                    controller: scrollController,
                     itemCount: widget.movies.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (_, int index) {
@@ -73,7 +71,7 @@ class _MovieSliderState extends State<MovieSlider> {
     } else {
       return Container(
         width: double.infinity,
-        height: 260,
+        height: 280,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -89,6 +87,7 @@ class _MovieSliderState extends State<MovieSlider> {
             ),
             Expanded(
                 child: ListView.builder(
+                    controller: scrollController,
                     itemCount: widget.movies.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (_, int index) {
@@ -115,17 +114,14 @@ class _MoviePoster extends StatelessWidget {
       child: Column(
         children: [
           GestureDetector(
-              onTap: () => Navigator.pushNamed(context, "details",
-                  arguments: "movie-instance"),
+              onTap: () =>
+                  Navigator.pushNamed(context, "details", arguments: movie),
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(20.0),
                   child: FadeInImage(
                       fit: BoxFit.cover,
                       placeholder: AssetImage("assets/no-image.jpg"),
                       image: NetworkImage(movie.fullPosterImage)))),
-          SizedBox(
-            height: 5.0,
-          ),
           Text(
             movie.title,
             overflow: TextOverflow.ellipsis,

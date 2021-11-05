@@ -1,21 +1,48 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:peliculas/models/models.dart';
+import 'package:peliculas/providers/movies_provider.dart';
+import 'package:provider/provider.dart';
 
 class CastingCards extends StatelessWidget {
+  final int movieId;
+  CastingCards(int this.movieId);
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 5),
-      width: double.infinity,
-      height: 200,
-      child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: 10,
-          itemBuilder: (_, int index) => _CastCard()),
-    );
+    final moviesProvider = Provider.of<MoviesProvider>(context, listen: false);
+
+    return FutureBuilder(
+        future: moviesProvider.getMovieCast(movieId),
+        builder: (_, AsyncSnapshot<List<Cast>> snapshot) {
+          if (!snapshot.hasData) {
+            return Container(
+              constraints: BoxConstraints(maxWidth: 300),
+              height: 100,
+              child: CupertinoActivityIndicator(),
+            );
+          }
+
+          final List<Cast> cast = snapshot.data!;
+
+          return Container(
+            margin: EdgeInsets.only(bottom: 5),
+            width: double.infinity,
+            height: 200,
+            child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: 10,
+                itemBuilder: (_, int index) => _CastCard(cast[index])),
+          );
+        });
   }
 }
 
 class _CastCard extends StatelessWidget {
+  final Cast actor;
+
+  const _CastCard(this.actor);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -29,13 +56,13 @@ class _CastCard extends StatelessWidget {
             child: FadeInImage(
               fit: BoxFit.cover,
               placeholder: AssetImage("assets/loading.gif"),
-              image: NetworkImage('https://via.placeholder.com/500x700.png'),
+              image: NetworkImage(actor.fullProfilePath),
               width: 100,
               height: 140,
             ),
           ),
           Text(
-            "actor.name asdas dzxc",
+            actor.name,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
