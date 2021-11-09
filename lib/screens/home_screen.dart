@@ -17,15 +17,18 @@ class HomeScreen extends StatelessWidget {
         elevation: 0,
         actions: [
           IconButton(
-              onPressed: () =>
-                  showSearch(context: context, delegate: MovieSearchDelegate()),
+              onPressed: /*() =>
+                  showSearch(context: context, delegate: MovieSearchDelegate())*/
+                  null,
               icon: Icon(Icons.search_outlined))
         ],
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            CardSwiper(movies: moviesProvider.onDisplayMovies),
+            CardSwiper(
+                movies: moviesProvider.onDisplayMovies,
+                onNextPage: () => moviesProvider.getOnNowPlaying()),
             MovieSlider(
               movies: moviesProvider.popularMovies,
               title: "Populares!", //Opcional
