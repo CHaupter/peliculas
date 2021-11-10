@@ -14,7 +14,8 @@ class CardSwiper extends StatefulWidget {
 }
 
 class _CardSwiperState extends State<CardSwiper> {
-  final SwiperController _swiperController = SwiperController();
+  final _swiperController = SwiperController();
+  final _swiperPagination = SwiperPagination();
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +57,7 @@ class _CardSwiperState extends State<CardSwiper> {
         loop: false,
         controller: _swiperController,
         itemCount: widget.movies.length,
+        pagination: _swiperPagination,
         layout: SwiperLayout.STACK,
         itemWidth: size.width * 0.6,
         itemHeight: size.height * 0.4,
