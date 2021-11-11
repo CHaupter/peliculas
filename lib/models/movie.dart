@@ -32,15 +32,16 @@ class Movie {
   bool video;
   double voteAverage;
   int voteCount;
+  String? heroId;
 
   get fullPosterImage {
-    if (posterPath!.isNotEmpty)
+    if (!(posterPath == null)) if (posterPath!.isNotEmpty)
       return "https://image.tmdb.org/t/p/w500${this.posterPath}";
     return "https://i.stack.imgur.com/GNhxO.png";
   }
 
   get fullBackdropPath {
-    if (backdropPath!.isNotEmpty)
+    if (!(backdropPath == null)) if (backdropPath!.isNotEmpty)
       return "https://image.tmdb.org/t/p/w500${this.backdropPath}";
     return "https://i.stack.imgur.com/GNhxO.png";
   }

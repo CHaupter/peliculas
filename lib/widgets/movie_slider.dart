@@ -32,7 +32,6 @@ class _MovieSliderState extends State<MovieSlider> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 
@@ -48,62 +47,42 @@ class _MovieSliderState extends State<MovieSlider> {
       );
     }
 
-    if (widget.title == null) {
-      return Container(
-        width: double.infinity,
-        height: 280,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            //Si no hay titulo, no mostrar este Widget
-
-            Expanded(
-                child: ListView.builder(
-                    controller: scrollController,
-                    itemCount: widget.movies.length,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (_, int index) {
-                      return _MoviePoster(widget.movies[index]);
-                    }))
-          ],
-        ),
-      );
-    } else {
-      return Container(
-        width: double.infinity,
-        height: 280,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            //Si no hay titulo, no mostrar este Widget
-            Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Text(
-                  widget.title!,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                )),
-            SizedBox(
-              height: 5.0,
-            ),
-            Expanded(
-                child: ListView.builder(
-                    controller: scrollController,
-                    itemCount: widget.movies.length,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (_, int index) {
-                      return _MoviePoster(widget.movies[index]);
-                    }))
-          ],
-        ),
-      );
-    }
+    return Container(
+      width: double.infinity,
+      height: 280,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          //Si no hay titulo, no mostrar este Widget
+          Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Text(
+                widget.title!,
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              )),
+          SizedBox(
+            height: 5.0,
+          ),
+          Expanded(
+              child: ListView.builder(
+                  controller: scrollController,
+                  itemCount: widget.movies.length,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (_, int index) {
+                    return _MoviePoster(widget.movies[index],
+                        "${widget.title}-${index}-${widget.movies[index].id}");
+                  }))
+        ],
+      ),
+    );
   }
 }
 
 class _MoviePoster extends StatelessWidget {
   final Movie movie;
+  final String heroId;
 
-  const _MoviePoster(this.movie);
+  const _MoviePoster(this.movie, this.heroId);
 
   @override
   Widget build(BuildContext context) {
@@ -114,14 +93,18 @@ class _MoviePoster extends StatelessWidget {
       child: Column(
         children: [
           GestureDetector(
-              onTap: () =>
-                  Navigator.pushNamed(context, "details", arguments: movie),
+            onTap: () =>
+                Navigator.pushNamed(context, "details", arguments: movie),
+            child: Hero(
+              tag: heroId,
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(20.0),
                   child: FadeInImage(
                       fit: BoxFit.cover,
                       placeholder: AssetImage("assets/no-image.jpg"),
-                      image: NetworkImage(movie.fullPosterImage)))),
+                      image: NetworkImage(movie.fullPosterImage))),
+            ),
+          ),
           Text(
             movie.title,
             overflow: TextOverflow.ellipsis,

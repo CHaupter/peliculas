@@ -37,7 +37,6 @@ class _CardSwiperState extends State<CardSwiper> {
 
     @override
     void dispose() {
-      // TODO: implement dispose
       super.dispose();
     }
 
@@ -64,17 +63,21 @@ class _CardSwiperState extends State<CardSwiper> {
         itemBuilder: (context, int index) {
           final movie = widget.movies[index];
 
-          return GestureDetector(
-              onTap: () =>
-                  Navigator.pushNamed(context, "details", arguments: movie),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20.0),
-                child: FadeInImage(
-                  placeholder: AssetImage('assets/no-image.jpg'),
-                  image: NetworkImage(movie.fullPosterImage),
-                  fit: BoxFit.cover,
-                ),
-              ));
+          movie.heroId = "swiper-${movie.id}";
+          return Hero(
+            tag: movie.heroId!,
+            child: GestureDetector(
+                onTap: () =>
+                    Navigator.pushNamed(context, "details", arguments: movie),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20.0),
+                  child: FadeInImage(
+                    placeholder: AssetImage('assets/no-image.jpg'),
+                    image: NetworkImage(movie.fullPosterImage),
+                    fit: BoxFit.cover,
+                  ),
+                )),
+          );
         },
       ),
     );

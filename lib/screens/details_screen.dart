@@ -6,14 +6,14 @@ class DetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Movie movie = ModalRoute.of(context)!.settings.arguments as Movie;
-
+    final String heroId = "details-${movie.heroId}";
     return Scaffold(
       body: CustomScrollView(
         slivers: [
           _CustomAppBar(movie),
           SliverList(
             delegate: SliverChildListDelegate([
-              _PosterAndTitle(movie),
+              _PosterAndTitle(movie, heroId),
               _Overview(movie),
               CastingCards(movie.id)
             ]),
@@ -67,8 +67,9 @@ class _CustomAppBar extends StatelessWidget {
 
 class _PosterAndTitle extends StatelessWidget {
   final Movie movie;
+  final String heroId;
 
-  const _PosterAndTitle(this.movie);
+  const _PosterAndTitle(this.movie, this.heroId);
 
   @override
   Widget build(BuildContext context) {
@@ -80,14 +81,17 @@ class _PosterAndTitle extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 20),
       child: Row(
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: FadeInImage(
-                fit: BoxFit.cover,
-                height: 150,
-                width: 120,
-                placeholder: AssetImage("assets/no-image.jpg"),
-                image: NetworkImage(movie.fullPosterImage)),
+          Hero(
+            tag: heroId,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: FadeInImage(
+                  fit: BoxFit.cover,
+                  height: 150,
+                  //width: 120,
+                  placeholder: AssetImage("assets/no-image.jpg"),
+                  image: NetworkImage(movie.fullPosterImage)),
+            ),
           ),
           SizedBox(width: 20),
           ConstrainedBox(

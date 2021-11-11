@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 
 class MovieSearchDelegate extends SearchDelegate {
   @override
-  // TODO: implement searchFieldLabel
   String? get searchFieldLabel => "Buscar...";
 
   @override
@@ -48,6 +47,10 @@ class MovieSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
+    if (query.isEmpty) {
+      return _emptyContainer();
+    }
+
     final _moviesProvider = Provider.of<MoviesProvider>(context, listen: false);
 
     return FutureBuilder(
@@ -61,28 +64,33 @@ class MovieSearchDelegate extends SearchDelegate {
 
           return ListView.builder(
               itemCount: movie.length,
-              itemBuilder: (_, int index) => _MovieItem(movie[index]));
+              itemBuilder: (_, int index) =>
+                  _MovieItem(movie[index], "search-${movie[index].id}"));
         });
   }
 }
 
 class _MovieItem extends StatelessWidget {
   final Movie movie;
+  final String heroId;
 
-  const _MovieItem(this.movie);
+  const _MovieItem(this.movie, this.heroId);
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: FadeInImage(
-        fit: BoxFit.contain,
-        placeholder: AssetImage("assets/loading.gif"),
-        image: NetworkImage(movie.fullPosterImage),
-        width: 50,
+      leading: Hero(
+        tag: heroId,
+        child: FadeInImage(
+          fit: BoxFit.contain,
+          placeholder: AssetImage("assets/loading.gif"),
+          image: NetworkImage(movie.fullPosterImage),
+          width: 50,
+        ),
       ),
       title: Text(movie.title),
       subtitle: Text(movie.originalTitle),
-      onTap: () => print(movie.title),
+      onTap: () => Navigator.pushNamed(context, "details", arguments: movie),
     );
   }
 }
